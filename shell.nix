@@ -6,26 +6,6 @@ with (import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/23b939cfc33
 let
   python = let
     packageOverrides = self: super: {
-      numpy = super.numpy.overridePythonAttrs (
-        old: { version = "1.19.2";
-               src = super.fetchPypi {
-                 pname = "numpy";
-                 version = "1.19.2";
-                 extension = "zip";
-                 sha256 = "0k28m123rc0jy9srg6f9wk80bdwpc5rxwzddcmq554z7w4q0fc8d";};
-               checkInputs = [ super.hypothesis ];
-             }
-      );
-
-      networkx = super.networkx.overridePythonAttrs (
-        old: { version = "2.5";
-               src = super.fetchPypi {
-                 pname = "networkx";
-                 version = "2.5";
-                 sha256 = "00hnii2lplig2s324k1hvi29pyfab6z7i22922f67jgv4da9ay3r";};
-             }
-      );
-
       pyarrow = super.pyarrow.overridePythonAttrs (
         old: { PYARROW_WITH_PLASMA = true;}
       );
