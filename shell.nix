@@ -56,7 +56,6 @@ let
           ps.numba
           ps.matplotlib
           ps.jupyterlab
-          ps.cython
           ps.pre-commit
           ps.pytest
           ps.pycodestyle
@@ -73,16 +72,7 @@ in mkShell rec {
   BABEL_LIBDIR = "${openbabel}/openbabel/3.1.0";
   LD_LIBRARY_PATH = openbabel;
 
-
-  # make sure that CPATH contains all the correct headers
-  CPATH = lib.concatStringsSep ":" [( lib.makeSearchPathOutput "dev" "include" [flint clang glibc gmp mpfr] )
-                                   ( lib.makeSearchPathOutput "dev" "include/python3.8" [pythonEnv])];
   buildInputs = [ pythonEnv
                   arrow-cpp
                   openbabel
-                  flint
-                  gcc
-                  glibc
-                  gmp  # flint dependency
-                  mpfr # flint dependency
                 ]; }
