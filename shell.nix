@@ -30,21 +30,12 @@ let
   pythonEnv = python.withPackages (
     ps: [ ps.pymatgen
           ps.numpy
-          ps.scipy
-          ps.sympy
           ps.networkx
-          ps.numba
           ps.matplotlib
           ps.jupyterlab
-          ps.pre-commit
-          ps.pytest
-          ps.pycodestyle
-          ps.pydocstyle
-          ps.flake8
-          ps.mypy
-          ps.mypy-extensions
           ps.pyarrow
           ps.pyopenbabel
+          ps.cython
         ]);
 
 in mkShell rec {
