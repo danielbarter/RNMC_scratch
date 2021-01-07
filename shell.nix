@@ -35,7 +35,6 @@ let
           ps.jupyterlab
           ps.pyarrow
           ps.pyopenbabel
-          ps.cython
         ]);
 
 in mkShell rec {
