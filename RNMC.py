@@ -61,9 +61,7 @@ class ReactionNetworkSerialization:
 
     index_to_speies: the reverse dictionary to species_to_index
 
-    species_data: maps species ids to species data. The keys for this dictionary
-    are species ids, not species indicies. species_to_index and index_to_species map
-    between species and the indices we use for monte carlo.
+    species_data: maps species indicies to species data.
 
     rns.species_data[rns.index_to_species[index]] gives the data for a given index
 
@@ -112,7 +110,7 @@ class ReactionNetworkSerialization:
         species_index = -1
         while not match:
             species_index += 1
-            data = self.species_data[self.index_to_species[species_index]]
+            data = self.species_data[species_index]
             species_mol_graph = data.mol_graph
 
             if data.charge == charge:
@@ -217,7 +215,9 @@ class ReactionNetworkSerialization:
     def __extract_species_data(self,entries_list):
         species_data = {}
         for entry in entries_list:
-            species_data[entry.entry_id] = entry
+            entry_id = entry.entry_id
+            if entry_id in self.species_to_index:
+                species_data[self.species_to_index[entry_id]] = entry
 
         self.species_data = species_data
 
