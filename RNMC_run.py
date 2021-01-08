@@ -20,7 +20,7 @@ with open('./network_from_paper','rb') as f:
 
 from RNMC import *
 
-rns = ReactionNetworkSerialization(network_from_paper, logging = True)
+rns = ReactionNetworkSerialization(network_from_paper)
 
 initial_state = np.zeros(rns.number_of_species)
 Li_plus_index = rns.find_index_from_mol_graph('./Li.xyz', 1)
@@ -34,7 +34,7 @@ initial_state[EC_index] = 30
 
 plasma_process = start_plasma_server(10)
 t = time.process_time()
-mcb = MonteCarloBundler(1,rns,initial_state,5,[42],logging=True)
+mcb = MonteCarloBundler(32,rns,initial_state,5,range(1000))
 print("time taken:", time.process_time() - t)
 mcb.pp_pathways(LEDC_index)
 plasma_process.terminate()
