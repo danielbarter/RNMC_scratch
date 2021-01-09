@@ -34,7 +34,7 @@ initial_state[EC_index] = 30
 
 plasma_process = start_plasma_server(10)
 t = time.process_time()
-mcb = MonteCarloBundler(32,rns,initial_state,5,range(1000))
+mcb = MonteCarloBundler(16,rns,initial_state,5,range(1000))
 print("time taken:", time.process_time() - t)
 mcb.pp_pathways(LEDC_index)
 plasma_process.terminate()
