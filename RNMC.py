@@ -618,9 +618,15 @@ class MonteCarloBundler:
 
 
         # serialize the relevent state for access by worker processes
+        if logging:
+            print('connecting to plasma server')
         client = plasma.connect(plasma_file)
+        if logging:
+            print('transfering data to plasma store')
         rns_dict_id = client.put(self.rns.rns_dict)
         initial_state_id = client.put(self.initial_state)
+        if logging:
+            print('transfer to plasma store complete')
 
         # it is important that this partial func doesn't have a reference
         # to self, otherwise it will end up pickling the whole
