@@ -31,10 +31,10 @@ LEDC_index = rns.find_index_from_mol_graph(
 initial_state[Li_plus_index] = 30
 initial_state[EC_index] = 30
 
-
-plasma_process = start_plasma_server(10)
+plasma_file = '/global/scratch/dbarter'
+plasma_process = start_plasma_server(10,plasma_file)
 t = time.process_time()
-mcb = MonteCarloBundler(4,rns,initial_state,5,range(1000))
+mcb = MonteCarloBundler(8,rns,initial_state,5,range(16),plasma_file)
 print("time taken:", time.process_time() - t)
 mcb.pp_pathways(LEDC_index)
 plasma_process.terminate()
