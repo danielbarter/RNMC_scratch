@@ -14,9 +14,8 @@ from pymatgen.analysis.graphs import MoleculeGraph
 from pymatgen.analysis.local_env import OpenBabelNN
 from pymatgen.analysis.fragmenter import metal_edge_extender
 
-plasma_file = "/tmp/plasma_RNMC"
 
-def start_plasma_server(number_of_gb, logging = False):
+def start_plasma_server(number_of_gb, plasma_file, logging = False):
 
     bytes_in_a_gb = 1000000000
 
@@ -457,6 +456,7 @@ class MonteCarlo:
                  seed,
                  rns_dict_id,
                  initial_state_id,
+                 plasma_file,
                  positive_weight_coef = 39,
                  termination_threshold = 1 / 1000,
                  logging = False):
@@ -502,18 +502,20 @@ def collect_duplicate_pathways(pathways):
 # this needs to be a global function so we can pickle it and send it
 # to the worker processes
 def run_with_seed(seed,
-          rns_dict_id,
-          initial_state_id,
-          positive_weight_coef,
-          termination_threshold,
-          time_cutoff,
-          logging):
+                  rns_dict_id,
+                  initial_state_id,
+                  plasma_file,
+                  positive_weight_coef,
+                  termination_threshold,
+                  time_cutoff,
+                  logging):
     """
     create and run a MonteCarlo object and return the reaction history
     """
     mc = MonteCarlo(seed,
                     rns_dict_id,
                     initial_state_id,
+                    plasma_file,
                     positive_weight_coef,
                     termination_threshold,
                     logging)
@@ -607,6 +609,7 @@ class MonteCarloBundler:
                  initial_state,
                  time_cutoff,
                  seed_array,
+                 plasma_file,
                  positive_weight_coef = 39,
                  termination_threshold = 1 / 1000,
                  logging = False):
@@ -626,6 +629,7 @@ class MonteCarloBundler:
             run_with_seed,
             rns_dict_id = rns_dict_id,
             initial_state_id = initial_state_id,
+            plasma_file = plasma_file,
             positive_weight_coef = positive_weight_coef,
             termination_threshold = termination_threshold,
             time_cutoff = time_cutoff,
