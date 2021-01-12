@@ -1,6 +1,4 @@
-# using this particular commit because openblas is version 0.3.12
-# 23b939cfc336612fc7c5ba6213aea7966c872153
-with (import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/23b939cfc336612fc7c5ba6213aea7966c872153.tar.gz") {});
+with (import ../hpc-nix/nixpkgs {});
 
 
 let
