@@ -33,8 +33,10 @@ initial_state[EC_index] = 30
 
 plasma_file = '/global/scratch/dbarter/plasma_RNMC'
 plasma_process = start_plasma_server(10,plasma_file)
+print('started plasma server')
 t = time.process_time()
-mcb = MonteCarloBundler(8,rns,initial_state,5,range(16),plasma_file, logging = True)
+print('starting MonteCarloBundler')
+mcb = MonteCarloBundler(8,rns,initial_state,5,range(8),plasma_file, logging = True)
 print("time taken:", time.process_time() - t)
 mcb.pp_pathways(LEDC_index)
 plasma_process.terminate()
