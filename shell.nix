@@ -33,6 +33,7 @@ let
           ps.jupyterlab
           ps.pyarrow
           ps.pyopenbabel
+          ps.memory_profiler
         ]);
 
 in mkShell rec {

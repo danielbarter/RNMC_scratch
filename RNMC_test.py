@@ -32,6 +32,6 @@ ledc_initial_state[EC_index] = 30
 # this should produce the sequence 143, 121, 20, 13, 2, 1
 plasma_file = '/global/scratch/dbarter/plasma_RNMC'
 plasma_process = start_plasma_server(1, plasma_file)
-ledc_mcb = MonteCarloBundler(8,ledc_rns,ledc_initial_state,5,range(1000), plasma_file)
+ledc_mcb = MonteCarloBundler(8,ledc_rns,ledc_initial_state,5,range(10000), plasma_file)
 ledc_mcb.pp_pathways(LEDC_index)
 plasma_process.terminate()
