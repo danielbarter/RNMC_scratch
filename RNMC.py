@@ -2,6 +2,7 @@ import numpy as np
 import pyarrow.plasma as plasma
 import math
 import time
+import os
 
 from copy import copy
 from functools import partial
@@ -39,6 +40,76 @@ def start_plasma_server(number_of_gb, plasma_file, logging = False):
     time.sleep(1)
 
     return p
+
+def serialize_reaction_network(rns, initial_state, folder, positive_weight_coef = 39):
+    number_of_species_postfix = "/number_of_species"
+    number_of_reactions_postfix = "/number_of_reactions"
+    number_of_reactants_postfix = "/number_of_reactants"
+    reactants_postfix = "/reactants"
+    number_of_products_postfix = "/number_of_products"
+    products_postfix = "/products"
+    factor_zero_postfix = "/factor_zero"
+    factor_two_postfix = "/factor_two"
+    factor_duplicate_postfix = "/factor_duplicate"
+    rates_postfix = "/rates"
+    initial_state_postfix = "/initial_state"
+
+    os.mkdir(folder)
+
+    with open(folder + number_of_species_postfix, 'w') as f:
+        f.write(str(rns.number_of_species))
+
+    with open(folder + number_of_reactions_postfix, 'w') as f:
+        f.write(str(rns.number_of_reactions))
+
+    with open(folder + number_of_reactants_postfix, 'w') as f:
+        for reaction in rns.index_to_reaction:
+            f.write(str(len(reaction['reactants'])) + '\n')
+
+    with open(folder + reactants_postfix, 'w') as f:
+        for reaction in rns.index_to_reaction:
+            for index in reaction['reactants']:
+                f.write(str(index) + ' ')
+            f.write('\n')
+
+    with open(folder + number_of_products_postfix, 'w') as f:
+        for reaction in rns.index_to_reaction:
+            f.write(str(len(reaction['products'])) + '\n')
+
+    with open(folder + products_postfix, 'w') as f:
+        for reaction in rns.index_to_reaction:
+            for index in reaction['products']:
+                f.write(str(index) + ' ')
+            f.write('\n')
+
+    with open(folder + factor_two_postfix, 'w') as f:
+        f.write(str(1.0))
+
+    with open(folder + factor_zero_postfix, 'w') as f:
+        f.write(str(1.0))
+
+    with open(folder + factor_duplicate_postfix, 'w') as f:
+        f.write(str(1.0))
+
+    with open(folder + rates_postfix, 'w') as f:
+        for reaction in rns.index_to_reaction:
+            dG = reaction['free_energy']
+            if dG > 0:
+                rate = math.exp(- positive_weight_coef * dG)
+            else:
+                rate = math.exp(- dG)
+            f.write(str(rate) + '\n')
+
+    with open(folder + initial_state_postfix, 'w') as f:
+        for i in range(rns.number_of_species):
+            f.write(str(int(initial_state[i])) + '\n')
+
+
+
+
+
+
+
 
 class ReactionNetworkSerialization:
     """

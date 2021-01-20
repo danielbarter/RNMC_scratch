@@ -29,9 +29,4 @@ LEDC_index = ledc_rns.find_index_from_mol_graph('./mrnet/test_files/reaction_net
 ledc_initial_state[Li_plus_index] = 30
 ledc_initial_state[EC_index] = 30
 
-# this should produce the sequence 143, 121, 20, 13, 2, 1
-plasma_file = '/global/scratch/dbarter/plasma_RNMC'
-plasma_process = start_plasma_server(1, plasma_file)
-ledc_mcb = MonteCarloBundler(8,ledc_rns,ledc_initial_state,5,range(10000), plasma_file)
-ledc_mcb.pp_pathways(LEDC_index)
-plasma_process.terminate()
+serialize_reaction_network(ledc_rns, ledc_initial_state, "./ronalds_network")
