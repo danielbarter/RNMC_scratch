@@ -57,10 +57,10 @@ def serialize_reaction_network(rns, initial_state, folder, positive_weight_coef 
     os.mkdir(folder)
 
     with open(folder + number_of_species_postfix, 'w') as f:
-        f.write(str(rns.number_of_species))
+        f.write(str(rns.number_of_species) + '\n')
 
     with open(folder + number_of_reactions_postfix, 'w') as f:
-        f.write(str(rns.number_of_reactions))
+        f.write(str(rns.number_of_reactions) + '\n')
 
     with open(folder + number_of_reactants_postfix, 'w') as f:
         for reaction in rns.index_to_reaction:
@@ -83,13 +83,13 @@ def serialize_reaction_network(rns, initial_state, folder, positive_weight_coef 
             f.write('\n')
 
     with open(folder + factor_two_postfix, 'w') as f:
-        f.write(str(1.0))
+        f.write(('%e' % 1.0) + '\n')
 
     with open(folder + factor_zero_postfix, 'w') as f:
-        f.write(str(1.0))
+        f.write(('%e' % 1.0) + '\n')
 
     with open(folder + factor_duplicate_postfix, 'w') as f:
-        f.write(str(1.0))
+        f.write(('%e' % 1.0) + '\n')
 
     with open(folder + rates_postfix, 'w') as f:
         for reaction in rns.index_to_reaction:
@@ -98,7 +98,7 @@ def serialize_reaction_network(rns, initial_state, folder, positive_weight_coef 
                 rate = math.exp(- positive_weight_coef * dG)
             else:
                 rate = math.exp(- dG)
-            f.write(str(rate) + '\n')
+            f.write(('%e' % rate) + '\n')
 
     with open(folder + initial_state_postfix, 'w') as f:
         for i in range(rns.number_of_species):
