@@ -122,15 +122,21 @@ class ReactionNetworkSerializationData:
             return None
 
 
-    def __extract_index_species_mapping(self,reactions):
+    def __extract_index_mappings(self,reactions):
         """
         assign each species an index and construct
         forward and backward mappings between indicies and species.
+
+        assign each reaction an index and construct
+        a mapping from reaction indices to reaction data
         """
         species_to_index = {}
+        index_to_reaction = []
         index = 0
+        reaction_count = 0
 
         for reaction in reactions:
+            reaction_count += 1
             entry_ids = {e.entry_id for e in reaction.reactants + reaction.products}
             for entry_id in entry_ids:
                 species = entry_id
@@ -139,22 +145,9 @@ class ReactionNetworkSerializationData:
                     index = index + 1
 
 
-        rev = {i : species for species, i in species_to_index.items()}
-        self.number_of_species = index
-        self.species_to_index = species_to_index
-        self.index_to_species = rev
-
-    def __extract_index_reaction_mapping(self,reactions):
-        """
-        assign each reaction an index and construct
-        a mapping from reaction indices to reaction data
-        """
-        self.number_of_reactions = 2 * len(reactions)
-        index_to_reaction = []
-        for reaction in reactions:
-            reactant_indices = [self.species_to_index[reactant]
+            reactant_indices = [species_to_index[reactant]
                                 for reactant in reaction.reactant_ids]
-            product_indices = [self.species_to_index[product]
+            product_indices = [species_to_index[product]
                                for product in reaction.product_ids]
 
             forward_free_energy = reaction.free_energy_A
@@ -177,8 +170,18 @@ class ReactionNetworkSerializationData:
                 rate = math.exp(- dG)
             reaction['rate'] = rate
 
-
+        rev = {i : species for species, i in species_to_index.items()}
+        self.number_of_reactions = 2 * reaction_count
+        self.number_of_species = index
+        self.species_to_index = species_to_index
+        self.index_to_species = rev
         self.index_to_reaction = index_to_reaction
+
+
+    def __extract_index_reaction_mapping(self,reactions):
+        """
+        """
+
 
     def __extract_species_data(self,entries_list):
         species_data = {}
@@ -199,7 +202,7 @@ class ReactionNetworkSerializationData:
         """
         Input: a reaction network object
         """
-        reactions = reaction_network.reactions
+        reactions = reaction_network
         entries_list = reaction_network.entries_list
         self.network_folder = network_folder
         self.param_folder = param_folder
@@ -207,17 +210,13 @@ class ReactionNetworkSerializationData:
         self.positive_weight_coef = positive_weight_coef
 
 
-        self.__extract_index_species_mapping(reactions)
+        self.__extract_index_mappings(reactions)
         if logging:
-            print("extracted index species mapping")
+            print("extracted index mappings")
 
         self.__extract_species_data(entries_list)
         if logging:
             print("extracted species data")
-
-        self.__extract_index_reaction_mapping(reactions)
-        if logging:
-            print("extracted index reaction mapping")
 
         self.initial_state = np.zeros(self.number_of_species)
         for (path, charge, count) in initial_state_data:
