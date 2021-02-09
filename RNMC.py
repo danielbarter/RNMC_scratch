@@ -177,12 +177,6 @@ class ReactionNetworkSerializationData:
         self.index_to_species = rev
         self.index_to_reaction = index_to_reaction
 
-
-    def __extract_index_reaction_mapping(self,reactions):
-        """
-        """
-
-
     def __extract_species_data(self,entries_list):
         species_data = {}
         for entry in entries_list:
