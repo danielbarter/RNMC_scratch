@@ -11,27 +11,6 @@ import mrnet.core.reactions
 import mrnet.core.rates
 
 
-# reactants and products are lists of pairs (.xyz file, charge)
-def is_reaction_present(rnsd, reactants, products):
-    reactant_indices = []
-    product_indices = []
-    for (file_xyz,charge) in reactants:
-        index = rnsd.find_index_from_mol_graph(file_xyz, charge)
-        reactant_indices.append(index)
-
-    for (file_xyz,charge) in products:
-        index = rnsd.find_index_from_mol_graph(file_xyz, charge)
-        product_indices.append(index)
-
-    reactants_unordered = frozenset(reactant_indices)
-    products_unordered = frozenset(product_indices)
-    for reaction in rnsd.index_to_reaction:
-        if (reactants_unordered == frozenset(reactions['reactants']) and
-            products_unordered == frozenset(reactions['products'])):
-            return reaction
-
-    return None
-
 if len(sys.argv) != 2:
     print("usage: python analyze.py network_folder")
     exit()

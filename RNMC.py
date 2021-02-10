@@ -440,9 +440,12 @@ class SimulationAnalyser:
                             + str(reactant_index)
                             + '.pdf}}\n')
 
+                        f.write(str(reactant_index) + '\n')
+
                     f.write('\\xrightarrow{'
                             + ('%.2f' % reaction['free_energy'])
                             + '}\n')
+
 
                     first = True
                     for product_index in reaction['products']:
@@ -456,6 +459,8 @@ class SimulationAnalyser:
                             + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
                             + str(product_index)
                             + '.pdf}}\n')
+
+                        f.write(str(product_index) + '\n')
 
                     f.write('$$')
                     f.write('\n\n\n')
