@@ -476,9 +476,10 @@ class SimulationAnalyser:
         self.reaction_histories = []
 
         for filename in os.listdir(simulation_histories_folder):
-            history = []
-            with open(simulation_histories_folder + '/' + filename, 'r') as f:
-                for line in f:
-                    history.append(int(line))
+            if 'reactions' in filename:
+                history = []
+                with open(simulation_histories_folder + '/' + filename, 'r') as f:
+                    for line in f:
+                        history.append(int(line))
 
-            self.reaction_histories.append(history)
+                self.reaction_histories.append(history)
