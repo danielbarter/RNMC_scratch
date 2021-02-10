@@ -3,7 +3,7 @@ sys.path.append('./mrnet/src')
 from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 from RNMC import *
-
+import pickle
 
 if len(sys.argv) != 4:
     print("usage: python serialize.py json network_folder param_folder")
@@ -16,6 +16,10 @@ param_folder = sys.argv[3]
 molecule_entries = loadfn(molecule_list_json)
 reaction_generator = ReactionGenerator(molecule_entries)
 
+with open('./missing_concerted','rb') as f:
+    missing_concerted = pickle.load(f)
+
+reaction_generator.reactions.append(missing_concerted)
 
 initial_state_data = [
     ('./Li.xyz', 1, 30),
