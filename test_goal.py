@@ -12,8 +12,8 @@ reaction_generator = ReactionGenerator(molecule_entries)
 produced_reactions = []
 
 for reaction in reaction_generator:
-    produced_reactions.append((frozenset(reaction.reactant_ids),
-                               frozenset(reaction.product_ids)))
+    produced_reactions.append((frozenset(reaction.reactant_indices),
+                               frozenset(reaction.product_indices)))
 
 produced_reactions = frozenset(produced_reactions)
 
