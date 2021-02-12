@@ -19,3 +19,4 @@ produced_reactions = frozenset(produced_reactions)
 
 with open('./goal','rb') as f:
     goal = pickle.load(f)
+
