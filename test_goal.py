@@ -20,3 +20,10 @@ produced_reactions = frozenset(produced_reactions)
 with open('./goal','rb') as f:
     goal = pickle.load(f)
 
+missing_reactions = goal - produced_reactions
+
+if (len(missing_reactions) == 0):
+    print("all good!")
+else:
+    print(missing_reactions)
+    print("reactions are missing. this is bad......")
