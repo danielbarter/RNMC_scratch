@@ -1,29 +1,42 @@
 import sys
-sys.path.append('./mrnet/src')
+sys.path.append('../../../src')
 from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 import pickle
 
-molecule_list_json = sys.argv[1]
 
+# you are probably gonna want to do something else while waiting for this
+# it takes ~ 30 minutes when running on sams molecule list
+
+molecule_list_json = sys.argv[1]
 molecule_entries = loadfn(molecule_list_json)
 reaction_generator = ReactionGenerator(molecule_entries)
-
-produced_reactions = []
-
-for reaction in reaction_generator:
-    produced_reactions.append((frozenset(reaction.reactant_indices),
-                               frozenset(reaction.product_indices)))
-
-produced_reactions = frozenset(produced_reactions)
 
 with open('./goal','rb') as f:
     goal = pickle.load(f)
 
-missing_reactions = goal - produced_reactions
+missing_reactions = set(goal)
+
+
+# suggesting that interpreter garbage collect the large frozen set
+# trying to keep memory footprint low
+goal = None
+
+
+
+for reaction in reaction_generator:
+    reaction_sig = ((frozenset(reaction.reactant_indices),
+                     frozenset(reaction.product_indices)))
+
+    if reaction_sig in missing_reactions:
+        missing_reactions.remove(reaction_sig)
+
+
+
+
 
 if (len(missing_reactions) == 0):
     print("all good!")
 else:
-    print(missing_reactions)
-    print("reactions are missing. this is bad......")
+    print(len(missing_reactions),
+          " reactions are missing. this is bad......")
