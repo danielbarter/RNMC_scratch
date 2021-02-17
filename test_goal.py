@@ -12,6 +12,10 @@ molecule_list_json = sys.argv[1]
 molecule_entries = loadfn(molecule_list_json)
 reaction_generator = ReactionGenerator(molecule_entries)
 
+# don't generate the elementry reactions
+reaction_generator.current_chunk = []
+
+
 with open('./goal','rb') as f:
     goal = pickle.load(f)
 
