@@ -21,7 +21,7 @@ missing_reactions = set(goal)
 # suggesting that interpreter garbage collect the large frozen set
 # trying to keep memory footprint low
 goal = None
-
+extras = []
 
 
 for reaction in reaction_generator:
@@ -31,12 +31,20 @@ for reaction in reaction_generator:
     if reaction_sig in missing_reactions:
         missing_reactions.remove(reaction_sig)
 
+    else:
+        extras.append(reaction_sig)
 
 
 
 
-if (len(missing_reactions) == 0):
+
+
+if (len(missing_reactions) == 0 and len(extras) == 0):
     print("all good!")
 else:
     print(len(missing_reactions),
-          " reactions are missing. this is bad......")
+          " reactions are missing.")
+    print(len(extras),
+          " extra reactions.")
+    print("this is bad....")
+
