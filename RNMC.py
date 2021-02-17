@@ -167,7 +167,10 @@ class ReactionNetworkSerializationData:
             if dG > 0:
                 rate = math.exp(- self.positive_weight_coef * dG)
             else:
-                rate = math.exp(- dG)
+                try:
+                    rate = math.exp(- dG)
+                except:
+                    breakpoint()
             reaction['rate'] = rate
 
         rev = {i : species for species, i in species_to_index.items()}
@@ -197,7 +200,7 @@ class ReactionNetworkSerializationData:
         Input: a reaction network object
         """
         reactions = reaction_network
-        entries_list = reaction_network.entries_list
+        entries_list = reaction_network.rn.entries_list
         self.network_folder = network_folder
         self.param_folder = param_folder
         self.logging = logging
@@ -336,6 +339,32 @@ def update_state(state, reaction):
         state[species_index] += 1
 
 class SimulationAnalyser:
+
+    def extract_species_info(self, target_species_index):
+        """
+        given a target molecule, return all the ways the molecule was
+        created, all the ways the molecule was consumed and the ending
+        frequencies of the molecule for each simulation.
+        """
+        producing_reactions = []
+        consuming_reactions = []
+        final_counts = []
+        for reaction_history in self.reaction_histories:
+            running_count = self.initial_state[target_species_index]
+
+            for reaction_index in reaction_history:
+                reaction = self.rnsd.index_to_reaction[reaction_index]
+
+                for reactant_index in reaction['reactants']:
+                    if target_species_index == reactant_index:
+                        running_count -= 1
+                        consuming_reactions.append(reaction_index)
+
+                for product_index in reaction['products']:
+                    if target_species_index == product_index:
+                        running_count += 1
+                        producing_reaction.append(reaction_index)
+
     def extract_reaction_pathways(self, target_species_index):
         """
         given a reaction history and a target molecule, find the
@@ -401,10 +430,10 @@ class SimulationAnalyser:
 
     def generate_pathway_report(self, target_species_index):
         self.rnsd.visualize_molecules()
-        folder = self.rnsd.network_folder + '/report_' + str(target_species_index)
+        folder = self.rnsd.network_folder + '/pathway_report_' + str(target_species_index)
         os.mkdir(folder)
 
-        with open(folder + '/report.tex','w') as f:
+        with open(folder + '/pathway_report.tex','w') as f:
             if target_species_index not in self.reaction_pathways_dict:
                 self.extract_reaction_pathways(target_species_index)
 
@@ -440,9 +469,10 @@ class SimulationAnalyser:
                             + str(reactant_index)
                             + '.pdf}}\n')
 
-                        mol_entry = self.rnsd.species_data[reactant_index]
-                        mrnet_index = mol_entry.parameters['ind']
-                        f.write(str(mrnet_index) + '\n')
+                        # uncomment to include species indices
+                        # mol_entry = self.rnsd.species_data[reactant_index]
+                        # mrnet_index = mol_entry.parameters['ind']
+                        # f.write(str(mrnet_index) + '\n')
 
                     f.write('\\xrightarrow{'
                             + ('%.2f' % reaction['free_energy'])
@@ -462,9 +492,10 @@ class SimulationAnalyser:
                             + str(product_index)
                             + '.pdf}}\n')
 
-                        mol_entry = self.rnsd.species_data[product_index]
-                        mrnet_index = mol_entry.parameters['ind']
-                        f.write(str(mrnet_index) + '\n')
+                        # uncomment to include species indices
+                        # mol_entry = self.rnsd.species_data[product_index]
+                        # mrnet_index = mol_entry.parameters['ind']
+                        # f.write(str(mrnet_index) + '\n')
 
                     f.write('$$')
                     f.write('\n\n\n')

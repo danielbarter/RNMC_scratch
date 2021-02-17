@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../../src')
+sys.path.append('./mrnet/src')
 from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 import pickle
