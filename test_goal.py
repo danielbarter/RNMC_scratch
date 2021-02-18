@@ -26,6 +26,27 @@ missing_reactions = set(goal)
 # trying to keep memory footprint low
 goal = None
 extras = []
+mass_not_conserved = []
+
+def mass_balancer(reaction):
+    reactant_atoms = {}
+    product_atoms = {}
+    for reactant in reaction.reactants:
+        for atom in reactant.species:
+            if atom in reactant_atoms:
+                reactant_atoms[atom] += 1
+            else:
+                reactant_atoms[atom] = 1
+
+    for product in reaction.products:
+        for atom in product.species:
+            if atom in product_atoms:
+                product_atoms[atom] += 1
+            else:
+                product_atoms[atom] = 1
+
+    return reactant_atoms, product_atoms
+
 
 
 for reaction in reaction_generator:
@@ -34,12 +55,12 @@ for reaction in reaction_generator:
 
     if reaction_sig in missing_reactions:
         missing_reactions.remove(reaction_sig)
-
     else:
         extras.append(reaction_sig)
 
-
-
+    reactant_atoms, product_atoms = mass_balancer(reaction)
+    if reactant_atoms != product_atoms:
+        mass_not_conserved.append(reaction)
 
 
 
@@ -51,4 +72,3 @@ else:
     print(len(extras),
           " extra reactions.")
     print("this is bad....")
-
