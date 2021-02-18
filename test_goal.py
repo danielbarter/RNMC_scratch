@@ -64,11 +64,13 @@ for reaction in reaction_generator:
 
 
 
-if (len(missing_reactions) == 0 and len(extras) == 0):
+if (len(missing_reactions) == 0 and len(extras) == 0 and len(mass_not_conserved) == 0):
     print("all good!")
 else:
     print(len(missing_reactions),
           " reactions are missing.")
     print(len(extras),
           " extra reactions.")
+    print(len(mass_not_conserved),
+          " reactions where atom numbers are not conserved")
     print("this is bad....")
