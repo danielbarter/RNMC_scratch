@@ -429,7 +429,6 @@ class SimulationAnalyser:
             print()
 
     def generate_pathway_report(self, target_species_index):
-        self.rnsd.visualize_molecules()
         folder = self.rnsd.network_folder + '/pathway_report_' + str(target_species_index)
         os.mkdir(folder)
 
@@ -523,3 +522,5 @@ class SimulationAnalyser:
                         history.append(int(line))
 
                 self.reaction_histories.append(history)
+
+        self.rnsd.visualize_molecules()
