@@ -476,7 +476,35 @@ class SimulationAnalyser:
                 '\\raisebox{-.5\\height}{'
                 + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
                 + str(target_species_index)
-                + '.pdf}}\n')
+                + '.pdf}}\n\n')
+
+            f.write('molecule frequency at end of simulations')
+            f.write(
+                '\\raisebox{-.5\\height}{'
+                + '\\includegraphics[scale=0.5]{./final_count_histogram.pdf'
+                + '}}\n\n')
+
+            f.write('producing reactions:\n\n\n')
+
+            for reaction_index, frequency in sorted(
+                    producing_reactions.items(),
+                    key = lambda item: -item[1]):
+
+                f.write(str(frequency) +
+                        " occurrences:\n")
+
+                self.latex_emit_reaction(f, reaction_index)
+
+            f.write('consuming reactions:\n\n\n')
+
+            for reaction_index, frequency in sorted(
+                    consuming_reactions.items(),
+                    key = lambda item: -item[1]):
+
+                f.write(str(frequency) +
+                        " occurrences:\n")
+
+                self.latex_emit_reaction(f, reaction_index)
 
 
 
@@ -518,55 +546,61 @@ class SimulationAnalyser:
                         " occurrences:\n")
 
                 for reaction_index in unique_pathway['pathway']:
-                    reaction = self.rnsd.index_to_reaction[reaction_index]
-                    f.write('$$\n')
-                    first = True
-                    for reactant_index in reaction['reactants']:
-                        if first:
-                            first = False
-                        else:
-                            f.write('+\n')
-
-                        f.write(
-                            '\\raisebox{-.5\\height}{'
-                            + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
-                            + str(reactant_index)
-                            + '.pdf}}\n')
-
-                        # uncomment to include species indices
-                        # mol_entry = self.rnsd.species_data[reactant_index]
-                        # mrnet_index = mol_entry.parameters['ind']
-                        # f.write(str(mrnet_index) + '\n')
-
-                    f.write('\\xrightarrow{'
-                            + ('%.2f' % reaction['free_energy'])
-                            + '}\n')
-
-
-                    first = True
-                    for product_index in reaction['products']:
-                        if first:
-                            first = False
-                        else:
-                            f.write('+\n')
-
-                        f.write(
-                            '\\raisebox{-.5\\height}{'
-                            + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
-                            + str(product_index)
-                            + '.pdf}}\n')
-
-                        # uncomment to include species indices
-                        # mol_entry = self.rnsd.species_data[product_index]
-                        # mrnet_index = mol_entry.parameters['ind']
-                        # f.write(str(mrnet_index) + '\n')
-
-                    f.write('$$')
-                    f.write('\n\n\n')
+                    self.latex_emit_reaction(f, reaction_index)
 
                 f.write('\\newpage\n')
 
             f.write('\\end{document}')
+
+    def latex_emit_reaction(self,f, reaction_index):
+        f.write('$$\n')
+        reaction = self.rnsd.index_to_reaction[reaction_index]
+        first = True
+        for reactant_index in reaction['reactants']:
+            if first:
+                first = False
+            else:
+                f.write('+\n')
+
+            f.write(
+                '\\raisebox{-.5\\height}{'
+                + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
+                + str(reactant_index)
+                + '.pdf}}\n')
+
+            # uncomment to include mrnet species indices
+            # these are different to the internal MC indices
+            # mol_entry = self.rnsd.species_data[reactant_index]
+            # mrnet_index = mol_entry.parameters['ind']
+            # f.write(str(mrnet_index) + '\n')
+
+        f.write('\\xrightarrow{'
+                + ('%.2f' % reaction['free_energy'])
+                + '}\n')
+
+
+        first = True
+        for product_index in reaction['products']:
+            if first:
+                first = False
+            else:
+                f.write('+\n')
+
+            f.write(
+                '\\raisebox{-.5\\height}{'
+                + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
+                + str(product_index)
+                + '.pdf}}\n')
+
+            # uncomment to include mrnet species indices
+            # these are different to the internal MC indices
+            # mol_entry = self.rnsd.species_data[product_index]
+            # mrnet_index = mol_entry.parameters['ind']
+            # f.write(str(mrnet_index) + '\n')
+
+        f.write('$$')
+        f.write('\n\n\n')
+
 
 
 
