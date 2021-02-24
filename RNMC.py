@@ -573,6 +573,7 @@ class SimulationAnalyser:
             # mol_entry = self.rnsd.species_data[reactant_index]
             # mrnet_index = mol_entry.parameters['ind']
             # f.write(str(mrnet_index) + '\n')
+            f.write(str(reactant_index) + '\n')
 
         f.write('\\xrightarrow{'
                 + ('%.2f' % reaction['free_energy'])
@@ -597,6 +598,7 @@ class SimulationAnalyser:
             # mol_entry = self.rnsd.species_data[product_index]
             # mrnet_index = mol_entry.parameters['ind']
             # f.write(str(mrnet_index) + '\n')
+            f.write(str(product_index) + '\n')
 
         f.write('$$')
         f.write('\n\n\n')
