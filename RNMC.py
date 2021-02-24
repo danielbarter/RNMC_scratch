@@ -78,6 +78,15 @@ class ReactionNetworkSerializationData:
     occours
     """
 
+    def internal_to_mrnet_index(self,internal_index):
+        mol_entry = self.species_data[internal_index]
+        return mol_entry.parameters['ind']
+
+    def mrnet_to_internal_index(self, mrnet_index):
+        for internal_index, mol_entry in self.species_data.items():
+            if mol_entry.parameters['ind'] == mrnet_index:
+                return internal_index
+
     def pp_reaction(self,index):
         """
         pretty print a reaction given its index
@@ -568,12 +577,8 @@ class SimulationAnalyser:
                 + str(reactant_index)
                 + '.pdf}}\n')
 
-            # uncomment to include mrnet species indices
-            # these are different to the internal MC indices
-            # mol_entry = self.rnsd.species_data[reactant_index]
-            # mrnet_index = mol_entry.parameters['ind']
-            # f.write(str(mrnet_index) + '\n')
-            f.write(str(reactant_index) + '\n')
+            mrnet_index = self.rnsd.internal_to_mrnet_index(reactant_index)
+            f.write(str(mrnet_index) + '\n')
 
         f.write('\\xrightarrow{'
                 + ('%.2f' % reaction['free_energy'])
@@ -593,12 +598,9 @@ class SimulationAnalyser:
                 + str(product_index)
                 + '.pdf}}\n')
 
-            # uncomment to include mrnet species indices
-            # these are different to the internal MC indices
-            # mol_entry = self.rnsd.species_data[product_index]
-            # mrnet_index = mol_entry.parameters['ind']
-            # f.write(str(mrnet_index) + '\n')
-            f.write(str(product_index) + '\n')
+
+            mrnet_index = self.rnsd.internal_to_mrnet_index(product_index)
+            f.write(str(mrnet_index) + '\n')
 
         f.write('$$')
         f.write('\n\n\n')
