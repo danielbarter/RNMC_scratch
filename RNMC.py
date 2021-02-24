@@ -1,6 +1,8 @@
 import math
 import numpy as np
 import networkx as nx
+import matplotlib.pyplot as plt
+
 import os
 import pickle
 from copy import deepcopy
@@ -10,6 +12,13 @@ from pymatgen.analysis.graphs import MoleculeGraph
 from pymatgen.analysis.local_env import OpenBabelNN
 from pymatgen.analysis.fragmenter import metal_edge_extender
 
+def visualize_molecule_count_histogram(final_counts, path):
+    fig = plt.figure()
+    ax = plt.axes()
+    bins = np.arange(0, max(final_counts) + 1.5) - 0.5
+    ax.set_xticks(bins + 0.5)
+    hist = ax.hist(final_counts,bins)
+    fig.savefig(path)
 
 def visualize_molecule_entry(molecule_entry, path):
 
@@ -340,14 +349,16 @@ def update_state(state, reaction):
 
 class SimulationAnalyser:
 
-    def extract_species_info(self, target_species_index):
+    def extract_species_consumption_info(self, target_species_index):
         """
         given a target molecule, return all the ways the molecule was
         created, all the ways the molecule was consumed and the ending
         frequencies of the molecule for each simulation.
         """
-        producing_reactions = []
-        consuming_reactions = []
+        # if a reaction has the target species twice as a reactant or product
+        # it will be counted twice
+        producing_reactions = {}
+        consuming_reactions = {}
         final_counts = []
         for reaction_history in self.reaction_histories:
             running_count = self.initial_state[target_species_index]
@@ -358,12 +369,23 @@ class SimulationAnalyser:
                 for reactant_index in reaction['reactants']:
                     if target_species_index == reactant_index:
                         running_count -= 1
-                        consuming_reactions.append(reaction_index)
+                        if reaction_index not in consuming_reactions:
+                            consuming_reactions[reaction_index] = 1
+                        else:
+                            consuming_reactions[reaction_index] += 1
 
                 for product_index in reaction['products']:
                     if target_species_index == product_index:
                         running_count += 1
-                        producing_reaction.append(reaction_index)
+                        if reaction_index not in producing_reactions:
+                            producing_reactions[reaction_index] = 1
+                        else:
+                            producing_reactions[reaction_index] += 1
+
+            final_counts.append(running_count)
+
+        return producing_reactions, consuming_reactions, final_counts
+
 
     def extract_reaction_pathways(self, target_species_index):
         """
@@ -428,6 +450,39 @@ class SimulationAnalyser:
                 print(self.rnsd.pp_reaction(reaction_index))
             print()
 
+    def generate_consumption_report(self, target_species_index):
+        folder = self.rnsd.network_folder + '/consumption_report_' + str(target_species_index)
+        os.mkdir(folder)
+
+        producing_reactions, consuming_reactions, final_counts = self.extract_species_consumption_info(
+            target_species_index)
+
+        visualize_molecule_count_histogram(
+            final_counts,
+            folder + '/final_count_histogram.pdf')
+
+
+        with open(folder + '/consumption_report.tex','w') as f:
+            f.write('\\documentclass{article}\n')
+            f.write('\\usepackage{graphicx}\n')
+            f.write('\\usepackage[margin=1cm]{geometry}\n')
+            f.write('\\usepackage{amsmath}\n')
+            f.write('\\pagenumbering{gobble}\n')
+            f.write('\\begin{document}\n')
+
+
+            f.write('consumption report for')
+            f.write(
+                '\\raisebox{-.5\\height}{'
+                + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
+                + str(target_species_index)
+                + '.pdf}}\n')
+
+
+
+            f.write('\\end{document}')
+
+
     def generate_pathway_report(self, target_species_index):
         folder = self.rnsd.network_folder + '/pathway_report_' + str(target_species_index)
         os.mkdir(folder)
@@ -439,11 +494,21 @@ class SimulationAnalyser:
             pathways = self.reaction_pathways_dict[target_species_index]
 
             f.write('\\documentclass{article}\n')
-            f.write('\\usepackage{graphicx}')
-            f.write('\\usepackage[margin=1cm]{geometry}')
-            f.write('\\usepackage{amsmath}')
-            f.write('\\pagenumbering{gobble}')
+            f.write('\\usepackage{graphicx}\n')
+            f.write('\\usepackage[margin=1cm]{geometry}\n')
+            f.write('\\usepackage{amsmath}\n')
+            f.write('\\pagenumbering{gobble}\n')
             f.write('\\begin{document}\n')
+
+            f.write('pathway report for')
+            f.write(
+                '\\raisebox{-.5\\height}{'
+                + '\\includegraphics[scale=0.2]{../molecule_diagrams/'
+                + str(target_species_index)
+                + '.pdf}}\n\n')
+            f.write('\\newpage\n\n\n')
+
+
 
             for _, unique_pathway in sorted(
                     pathways.items(),
