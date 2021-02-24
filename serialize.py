@@ -39,9 +39,10 @@ rnsd = ReactionNetworkSerializationData(reaction_generator,
 
 
 serialize_reaction_network(rnsd)
-serialize_simulation_parameters(seeds=range(1000,100000),
-                                number_of_threads=7,
-                                time_cutoff=5.0,
-                                folder=rnsd.param_folder)
+
+# serialize_simulation_parameters(seeds=range(1000,100000),
+#                                 number_of_threads=7,
+#                                 time_cutoff=5.0,
+#                                 folder=rnsd.param_folder)
 
 print("run simulation with ../RNMC " + network_folder + " " + param_folder )

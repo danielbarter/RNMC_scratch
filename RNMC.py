@@ -82,6 +82,8 @@ class ReactionNetworkSerializationData:
         mol_entry = self.species_data[internal_index]
         return mol_entry.parameters['ind']
 
+    # if you are going to use this function heavily, probably best to
+    # precompute a lookup dict here rather than looping through each time
     def mrnet_to_internal_index(self, mrnet_index):
         for internal_index, mol_entry in self.species_data.items():
             if mol_entry.parameters['ind'] == mrnet_index:
@@ -520,7 +522,7 @@ class SimulationAnalyser:
             f.write('\\end{document}')
 
 
-    def generate_pathway_report(self, target_species_index):
+    def generate_pathway_report(self, target_species_index, min_frequency):
         folder = self.rnsd.network_folder + '/pathway_report_' + str(target_species_index)
         os.mkdir(folder)
 
@@ -546,18 +548,21 @@ class SimulationAnalyser:
             f.write('\\newpage\n\n\n')
 
 
-
             for _, unique_pathway in sorted(
                     pathways.items(),
                     key = lambda item: -item[1]['frequency']):
 
-                f.write(str(unique_pathway['frequency']) +
-                        " occurrences:\n")
+                frequency = unique_pathway['frequency']
+                if frequency > min_frequency:
+                    f.write(str(frequency) +
+                            " occurrences:\n")
 
-                for reaction_index in unique_pathway['pathway']:
-                    self.latex_emit_reaction(f, reaction_index)
+                    for reaction_index in unique_pathway['pathway']:
+                        self.latex_emit_reaction(f, reaction_index)
 
-                f.write('\\newpage\n')
+                    f.write('\\newpage\n')
+                else:
+                    break
 
             f.write('\\end{document}')
 
@@ -577,6 +582,10 @@ class SimulationAnalyser:
                 + str(reactant_index)
                 + '.pdf}}\n')
 
+
+
+            # these are mrnet indices, which differ from the internal
+            # MC indices
             mrnet_index = self.rnsd.internal_to_mrnet_index(reactant_index)
             f.write(str(mrnet_index) + '\n')
 
@@ -598,7 +607,8 @@ class SimulationAnalyser:
                 + str(product_index)
                 + '.pdf}}\n')
 
-
+            # these are mrnet indices, which differ from the internal
+            # MC indices
             mrnet_index = self.rnsd.internal_to_mrnet_index(product_index)
             f.write(str(mrnet_index) + '\n')
 
