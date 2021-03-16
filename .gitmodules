@@ -1,6 +1,3 @@
-[submodule "RNMC_native"]
-	path = RNMC_native
-	url = https://github.com/danielbarter/RNMC_native
 [submodule "mrnet"]
 	path = mrnet
 	url = https://github.com/materialsproject/mrnet
