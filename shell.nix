@@ -56,5 +56,6 @@ in mkShell rec {
   buildInputs = [ pythonEnv
                   graphviz
                   texlive.combined.scheme-small
+                  (import ./RNMC_native)
                 ];
 }
