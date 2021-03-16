@@ -45,6 +45,12 @@ let
             ps.openbabel-bindings
             ps.networkx
             ps.pygraphviz
+            ps.pytest
+            ps.numba
+            ps.black
+            ps.pycodestyle
+            ps.flake8
+            ps.mypy
           ]);
 in mkShell rec {
   buildInputs = [ pythonEnv
