@@ -5,16 +5,16 @@ from monty.serialization import loadfn
 from mrnet.stochastic.rnmc import *
 
 
-molecule_entries = loadfn("./ronalds_MoleculeEntry.json")
+molecule_entries = loadfn("./mol_lists/ronalds_MoleculeEntry.json")
 
 li_plus_mol_entry = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
-    './Li.xyz',
+    './xyz_files/Li.xyz',
     1)
 
 ec_mol_entry = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
-    './EC.xyz',
+    './xyz_files/EC.xyz',
     0)
 
 network_folder = Path("/tmp/network")
