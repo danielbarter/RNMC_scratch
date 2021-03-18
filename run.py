@@ -4,8 +4,11 @@ from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 from mrnet.stochastic.rnmc import *
 
+if sys.argc != 2:
+    print("usage: python run.py json_file")
+    quit()
 
-molecule_entries = loadfn("./mol_lists/ronalds_MoleculeEntry.json")
+molecule_entries = loadfn(sys.argv[2])
 
 li_plus_mol_entry = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
@@ -17,8 +20,8 @@ ec_mol_entry = find_mol_entry_from_xyz_and_charge(
     './xyz_files/EC.xyz',
     0)
 
-network_folder = Path("/tmp/network")
-param_folder = Path("/tmp/params")
+network_folder = "/tmp/network"
+param_folder = "/tmp/params"
 
 initial_state_data = [
 (li_plus_mol_entry, 30),
