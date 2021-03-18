@@ -43,3 +43,5 @@ analysis = run(molecule_entries,
                200,
                1000)
 
+analysis.generate_pathway_report(ledc_entry,10)
+analysis.generate_consumption_report(ledc_entry)
