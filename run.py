@@ -41,7 +41,9 @@ analysis = run(molecule_entries,
                param_folder,
                4,
                200,
-               1000)
+               1000,
+               all_rate_coefficients_are_one = True
+               )
 
 analysis.generate_pathway_report(ledc_entry,10)
 analysis.generate_consumption_report(ledc_entry)
