@@ -45,3 +45,4 @@ analysis = run(molecule_entries,
 
 analysis.generate_pathway_report(ledc_entry,10)
 analysis.generate_consumption_report(ledc_entry)
+analysis.generate_reaction_tally_report()
