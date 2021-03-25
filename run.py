@@ -38,11 +38,7 @@ initial_state_data = [
 analysis = run(molecule_entries,
                initial_state_data,
                network_folder,
-               param_folder,
-               4,
-               200,
-               1000,
-               all_rate_coefficients_are_one = True
+               param_folder
                )
 
 analysis.generate_pathway_report(ledc_entry,10)
