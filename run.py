@@ -38,7 +38,10 @@ initial_state_data = [
 analysis = run(molecule_entries,
                initial_state_data,
                network_folder,
-               param_folder
+               param_folder,
+               number_of_threads = 20,
+               number_of_steps = 500,
+               number_of_simulations = 50,000
                )
 
 analysis.generate_pathway_report(ledc_entry,10)
