@@ -41,7 +41,8 @@ analysis = run(molecule_entries,
                param_folder,
                number_of_threads = 20,
                number_of_steps = 500,
-               number_of_simulations = 50000
+               number_of_simulations = 50000,
+               all_rate_coefficients_are_one=True
                )
 
 analysis.generate_pathway_report(ledc_entry,10)
