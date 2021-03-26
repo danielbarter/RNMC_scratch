@@ -1,4 +1,4 @@
-with (import /home/danielbarter/nixpkgs {});
+with (import <nixpkgs> {});
 
 stdenv.mkDerivation rec {
   name = "RNMC_native";

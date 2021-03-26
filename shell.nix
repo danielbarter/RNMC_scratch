@@ -1,4 +1,4 @@
-with (import /home/danielbarter/nixpkgs {});
+with (import <nixpkgs> {});
 
 
 let
