@@ -10,4 +10,5 @@ stdenv.mkDerivation rec {
     sha256 = "0kb0bg3qfzbm0zzxdl9rv8lb8kj28r3mz5a9f16kf0k9px8w9kws";
   };
   doCheck = true;
+  mesonBuildType = "debug";
 }
