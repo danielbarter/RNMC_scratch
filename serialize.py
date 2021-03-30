@@ -49,7 +49,7 @@ initial_state_data_3 = [
 (ec_mol_entry,300)
 ]
 
-reaction_generator = ReactionGenerator(molecule_entries,single_elem_interm_ignore=[])
+reaction_generator = ReactionGenerator(molecule_entries)
 rnsd = SerializedReactionNetwork(reaction_generator)
 rnsd.serialize("./runs/network_0", initial_state_data_0)
 rnsd.serialize("./runs/network_1", initial_state_data_1)
