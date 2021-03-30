@@ -6,23 +6,28 @@ from monty.serialization import loadfn
 from mrnet.stochastic.serialize import *
 from mrnet.stochastic.analyze import *
 
+from multiprocessing import Pool
+
 if len(sys.argv) != 2:
     print("usage: python serialize.py json_file")
     quit()
 
-molecule_entries = loadfn(sys.argv[2])
+molecule_entries = loadfn(sys.argv[1])
 
 ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
     './xyz_files/LEDC.xyz',
     0)
 
-a0 = load_analysis("./runs/network_0")
-a1 = load_analysis("./runs/network_1")
-a2 = load_analysis("./runs/network_2")
-a3 = load_analysis("./runs/network_3")
+p0 = "./runs/network_0"
+p1 = "./runs/network_1"
+p2 = "./runs/network_2"
+p3 = "./runs/network_3"
 
-a0.generate_pathway_report(ledc_mol_entry, 100)
-a1.generate_pathway_report(ledc_mol_entry, 100)
-a2.generate_pathway_report(ledc_mol_entry, 100)
-a3.generate_pathway_report(ledc_mol_entry, 100)
+def f(p):
+    a = load_analysis(p)
+    a.generate_pathway_report(ledc_mol_entry, 100)
+
+with Pool(4) as p:
+    p.map(f, [p0, p1, p2, p3])
+

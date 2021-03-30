@@ -12,7 +12,7 @@ if len(sys.argv) != 2:
     print("usage: python serialize.py json_file")
     quit()
 
-molecule_entries = loadfn(sys.argv[2])
+molecule_entries = loadfn(sys.argv[1])
 
 li_plus_mol_entry = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
