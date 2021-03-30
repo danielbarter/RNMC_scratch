@@ -29,19 +29,31 @@ ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
     './xyz_files/LEDC.xyz',
     0)
 
-initial_state_data = [
+initial_state_data_0 = [
 (li_plus_mol_entry, 30),
 (ec_mol_entry,30)
 ]
 
+initial_state_data_1 = [
+(li_plus_mol_entry, 300),
+(ec_mol_entry,30)
+]
+
+initial_state_data_2 = [
+(li_plus_mol_entry, 30),
+(ec_mol_entry,300)
+]
+
+initial_state_data_3 = [
+(li_plus_mol_entry, 300),
+(ec_mol_entry,300)
+]
+
 reaction_generator = ReactionGenerator(molecule_entries,single_elem_interm_ignore=[])
 rnsd = SerializedReactionNetwork(reaction_generator)
-rnsd.serialize("./network", initial_state_data)
-serialize_simulation_parameters("./params", number_of_threads=7)
+rnsd.serialize("./runs/network_0", initial_state_data_0)
+rnsd.serialize("./runs/network_1", initial_state_data_1)
+rnsd.serialize("./runs/network_2", initial_state_data_2)
+rnsd.serialize("./runs/network_3", initial_state_data_3)
+serialize_simulation_parameters("./runs/params", number_of_threads=7)
 
-run_simulator("./network", "./params")
-
-sa = load_analysis("./network")
-sa.generate_pathway_report(ledc_mol_entry,10)
-sa.generate_consumption_report(ledc_mol_entry)
-sa.generate_reaction_tally_report()
