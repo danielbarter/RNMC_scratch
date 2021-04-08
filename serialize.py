@@ -51,8 +51,6 @@ initial_state_data_3 = [
 
 reaction_generator = ReactionGenerator(molecule_entries, single_elem_interm_ignore=[])
 rnsd = SerializedReactionNetwork(reaction_generator)
-rnsd.serialize("./runs/network_0", initial_state_data_0)
-# rnsd.serialize("./runs/network_1", initial_state_data_1)
-# rnsd.serialize("./runs/network_2", initial_state_data_2)
-# rnsd.serialize("./runs/network_3", initial_state_data_3)
+rnsd.serialize_network("./runs/network")
+rnsd.serialize_initial_state("./runs/network", initial_state_data_0)
 serialize_simulation_parameters("./runs/params", number_of_threads=7, step_cutoff=2000, number_of_simulations = 10000)
