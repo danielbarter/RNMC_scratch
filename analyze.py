@@ -24,3 +24,4 @@ network_folder = "./runs/network"
 
 sa = SimulationAnalyzer(network_folder, molecule_entries)
 sa.generate_pathway_report(ledc_mol_entry, 10)
+sa.generate_consumption_report(ledc_mol_entry)

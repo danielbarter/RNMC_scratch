@@ -7,11 +7,13 @@ from mrnet.stochastic.serialize import *
 
 
 
-if len(sys.argv) != 2:
-    print("usage: python serialize.py json_file")
+if len(sys.argv) != 4:
+    print("usage: python serialize.py json_file network params")
     quit()
 
 molecule_entries = loadfn(sys.argv[1])
+network_folder = sys.argv[2]
+params_folder = sys.argv[3]
 
 li_plus_mol_entry = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
@@ -49,6 +51,6 @@ initial_state_data_3 = [
 ]
 
 reaction_generator = ReactionGenerator(molecule_entries, single_elem_interm_ignore=[])
-serialize_network("./runs/network",reaction_generator)
-serialize_initial_state("./runs/network", molecule_entries, initial_state_data_0)
-serialize_simulation_parameters("./runs/params", number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
+serialize_network(network_folder,reaction_generator)
+serialize_initial_state(network_folder, molecule_entries, initial_state_data_0)
+serialize_simulation_parameters(params_folder, number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
