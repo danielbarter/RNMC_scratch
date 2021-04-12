@@ -4,7 +4,6 @@ sys.path.append('./mrnet/src')
 from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 from mrnet.stochastic.serialize import *
-from mrnet.stochastic.analyze import *
 
 
 
@@ -50,7 +49,6 @@ initial_state_data_3 = [
 ]
 
 reaction_generator = ReactionGenerator(molecule_entries, single_elem_interm_ignore=[])
-rnsd = SerializedReactionNetwork(reaction_generator)
-rnsd.serialize_network("./runs/network")
-rnsd.serialize_initial_state("./runs/network", initial_state_data_0)
-serialize_simulation_parameters("./runs/params", number_of_threads=7, step_cutoff=2000, number_of_simulations = 10000)
+serialize_network("./runs/network",reaction_generator)
+serialize_initial_state("./runs/network", molecule_entries, initial_state_data_0)
+serialize_simulation_parameters("./runs/params", number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
