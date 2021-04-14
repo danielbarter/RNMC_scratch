@@ -8,18 +8,19 @@ from mrnet.stochastic.analyze import *
 
 from multiprocessing import Pool
 
-if len(sys.argv) != 2:
-    print("usage: python analyze.py json_file")
+if len(sys.argv) != 3:
+    print("usage: python analyze.py json_file network_folder")
     quit()
 
 molecule_entries = loadfn(sys.argv[1])
+network_folder = sys.argv[2]
+
 
 ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
     molecule_entries,
     './xyz_files/LEDC.xyz',
     0)
 
-network_folder = "./runs/network"
 
 
 sa = SimulationAnalyzer(network_folder, molecule_entries)
