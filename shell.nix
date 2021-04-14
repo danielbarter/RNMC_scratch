@@ -56,6 +56,7 @@ in mkShell rec {
   buildInputs = [ pythonEnv
                   graphviz
                   texlive.combined.scheme-small
+                  sqlitebrowser
                   (import ./RNMC_native)
                 ];
 }
