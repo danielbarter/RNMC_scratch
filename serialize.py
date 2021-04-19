@@ -51,6 +51,6 @@ initial_state_data_3 = [
 ]
 
 reaction_generator = ReactionGenerator(molecule_entries, single_elem_interm_ignore=[])
-SerializeNetwork(network_folder,reaction_generator, shard_size=100)
+SerializeNetwork(network_folder,reaction_generator)
 serialize_initial_state(network_folder, molecule_entries, initial_state_data_0)
 serialize_simulation_parameters(params_folder, number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
