@@ -2,12 +2,12 @@ with (import <nixpkgs> {});
 
 stdenv.mkDerivation rec {
   name = "RNMC_native";
-  hash = "e05e265dc79e34baa28c472ec35825e2dfa388d0";
+  hash = "f27d29f92d36aed476bb9e2507d3215e5e69b85d";
   buildInputs = [gsl];
   nativeBuildInputs = [meson ninja gcc sqlite];
   src = fetchurl {
     url = "https://github.com/danielbarter/RNMC_native/archive/${hash}.tar.gz";
-    sha256 = "097gaw0w4rmpafndfixyb9nfxhr9mg2k57yd0h0ic4jnm9n05r6j";
+    sha256 = "1zfr3h7m5s0bix42p2q4d6k3xyzkylcl317hx07kbc2bs5h0b0xc";
   };
   doCheck = true;
   mesonBuildType = "debug";
