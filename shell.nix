@@ -51,12 +51,14 @@ let
             ps.pycodestyle
             ps.flake8
             ps.mypy
+            ps.pulp
           ]);
 in mkShell rec {
   buildInputs = [ pythonEnv
                   graphviz
                   texlive.combined.scheme-small
                   sqlitebrowser
+                  cbc
                   (import ./RNMC_native)
                 ];
 }
