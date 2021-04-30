@@ -16,6 +16,7 @@ molecule_entries = loadfn(sys.argv[1])
 network_folder = sys.argv[2]
 params_folder = sys.argv[3]
 
+
 # li_plus_mol_entry = find_mol_entry_from_xyz_and_charge(
 #     molecule_entries,
 #     './xyz_files/Li.xyz',
@@ -52,8 +53,6 @@ params_folder = sys.argv[3]
 # ]
 
 reaction_generator = ReactionGenerator(molecule_entries, single_elem_interm_ignore=[])
-SerializeNetwork(network_folder,reaction_generator,constant_barrier=0.1)
+SerializeNetwork(network_folder,reaction_generator,constant_barrier=0.1, shard_size=2000000)
 # serialize_initial_state(network_folder, molecule_entries, initial_state_data_0)
 # serialize_simulation_parameters(params_folder, number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
-nu = NetworkUpdater(network_folder, number_of_threads=30)
-nu.set_duplicate_reaction_rates_to_zero()
