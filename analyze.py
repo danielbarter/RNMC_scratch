@@ -26,7 +26,7 @@ ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
 sa = SimulationAnalyzer(network_folder, molecule_entries)
 sa.generate_reaction_tally_report(10)
 # sa.generate_simulation_history_report(3727)
-# sa.generate_pathway_report(ledc_mol_entry, 10)
+sa.generate_pathway_report(ledc_mol_entry, 10)
 # sa.generate_consumption_report(ledc_mol_entry)
 # sa.generate_list_of_all_reactions_report()
 # sa.generate_list_of_all_species_report()
