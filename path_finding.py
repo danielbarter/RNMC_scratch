@@ -36,7 +36,6 @@ entries_box = EntriesBox(mol_list)
 ri = ReactionIterator(entries_box)
 rn = ReactionNetwork(ri)
 
-
 initial_inds = [e.parameters["ind"] for e in init_mols]
 
 rn.solve_prerequisites(initial_inds, "softplus")
