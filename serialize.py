@@ -53,7 +53,7 @@ initial_state_data_3 = [
 ]
 
 entries_box = EntriesBox(molecule_entries)
-reaction_generator = ReactionIterator(entries_box, single_elem_interm_ignore=[])
-SerializeNetwork(network_folder,reaction_generator,constant_barrier=0.1, shard_size=2000000)
+reaction_generator = ReactionIterator(entries_box)
+SerializeNetwork(network_folder,reaction_generator, shard_size=2000000)
 serialize_initial_state(network_folder, entries_box, initial_state_data_0)
 serialize_simulation_parameters(params_folder, number_of_threads=7, step_cutoff=200, number_of_simulations = 10000)
