@@ -9,6 +9,5 @@ stdenv.mkDerivation rec {
     url = "https://github.com/danielbarter/RNMC_native/archive/${hash}.tar.gz";
     sha256 = "03zfcchng1p4d2xrdn3dykhy1lnsg0mzp2pd6dj25rdy759z6c7n";
   };
-  doCheck = true;
   mesonBuildType = "debug";
 }
