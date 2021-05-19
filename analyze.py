@@ -22,7 +22,7 @@ ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
     './xyz_files/LEDC.xyz',
     0)
 
-entries_box = EntriesBox(molecule_entries)
+entries_box = EntriesBox(molecule_entries, reindex=False)
 sa = SimulationAnalyzer(network_folder, entries_box)
 # sa.generate_reaction_tally_report(10)
 # sa.generate_simulation_history_report(3727)
