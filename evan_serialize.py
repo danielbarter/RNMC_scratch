@@ -14,6 +14,7 @@ destination_path = sys.argv[2]
 with open(path_to_box, "rb") as pick:
     box = pickle.load(pick)
     rxn_iter = ReactionIterator(
+        electron_free_energy = -1.4,
         box,
         single_elem_interm_ignore=["C1", "O1", "P1", "F1"])
 
