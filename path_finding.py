@@ -44,4 +44,6 @@ rn.solve_prerequisites(initial_inds, "default_cost")
 PRs, paths, top_path_list = rn.find_paths(
     initial_inds, target.parameters["ind"], weight="default_cost", num_paths=20
 )
+
+pathfinding_path_report("./path_finding_report", rn, paths)
 # return shortest paths to every mol
