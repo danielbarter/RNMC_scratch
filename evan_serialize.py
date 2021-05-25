@@ -15,9 +15,9 @@ with open(path_to_box, "rb") as pick:
     box = pickle.load(pick)
     rxn_iter = ReactionIterator(
         box,
-        electron_free_energy=-1.4,
+        electron_free_energy=-1.8,
         single_elem_interm_ignore=["C1", "O1", "P1", "F1"])
 
 sn = SerializeNetwork(destination_path,
        rxn_iter,
-       constant_barrier=0.3)
+       constant_barrier=0.0)
