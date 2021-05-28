@@ -21,3 +21,4 @@ with open(path_to_box, "rb") as pick:
 sn = SerializeNetwork(destination_path,
        rxn_iter,
        constant_barrier=0.0)
+
