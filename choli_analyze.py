@@ -1,5 +1,6 @@
 import sys
 import os
+sys.path.append('./mrnet/src')
 from mrnet.network.reaction_generation import *
 from monty.serialization import loadfn
 from mrnet.stochastic.serialize import *
