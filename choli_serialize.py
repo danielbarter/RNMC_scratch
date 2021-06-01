@@ -34,9 +34,9 @@ EMC_mol_entry = find_mol_entry_from_xyz_and_charge(
     0)
 
 initial_state_data = [
-    (Li_plus_mol_entry, 500),
-    (EC_mol_entry, 500),
-    (EMC_mol_entry, 500)
+    (Li_plus_mol_entry, 100),
+    (EC_mol_entry, 100),
+    (EMC_mol_entry, 100)
 ]
 
 entries_box = EntriesBox(molecule_entries)
