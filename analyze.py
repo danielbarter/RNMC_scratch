@@ -23,11 +23,10 @@ ledc_mol_entry  = find_mol_entry_from_xyz_and_charge(
     0)
 
 entries_box = EntriesBox(molecule_entries, reindex=False)
-sa = SimulationAnalyzer(network_folder, entries_box)
+sa = SimulationAnalyzer(network_folder, entries_box, load_times=False)
 # sa.generate_reaction_tally_report(0)
 # sa.generate_simulation_history_report(3727)
-# sa.generate_pathway_report(ledc_mol_entry, number_of_pathways=100, sort_by_frequency=False)
+sa.generate_pathway_report(ledc_mol_entry, number_of_pathways=100, sort_by_frequency=False)
 # sa.generate_consumption_report(ledc_mol_entry)
 # sa.generate_list_of_all_reactions_report()
 # sa.generate_list_of_all_species_report()
-sa.generate_sink_report()
